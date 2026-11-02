@@ -27,7 +27,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/envtest"
 
-	operatorutilsv1alpha1 "github.com/redhat-cop/operator-utils/api/v1alpha1"
+	operatorutilsv1alpha1 "github.com/gjkamstra/operator-utils/v2/api/v1alpha1"
 	// +kubebuilder:scaffold:imports
 )
 

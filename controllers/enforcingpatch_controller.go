@@ -26,11 +26,11 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 	"sigs.k8s.io/controller-runtime/pkg/source"
 
-	"github.com/redhat-cop/operator-utils/api/v1alpha1"
-	operatorutilsv1alpha1 "github.com/redhat-cop/operator-utils/api/v1alpha1"
-	"github.com/redhat-cop/operator-utils/pkg/util/lockedresourcecontroller"
-	"github.com/redhat-cop/operator-utils/pkg/util/lockedresourcecontroller/lockedpatch"
-	"github.com/redhat-cop/operator-utils/pkg/util/lockedresourcecontroller/lockedresource"
+	"github.com/gjkamstra/operator-utils/v2/api/v1alpha1"
+	operatorutilsv1alpha1 "github.com/gjkamstra/operator-utils/v2/api/v1alpha1"
+	"github.com/gjkamstra/operator-utils/v2/pkg/util/lockedresourcecontroller"
+	"github.com/gjkamstra/operator-utils/v2/pkg/util/lockedresourcecontroller/lockedpatch"
+	"github.com/gjkamstra/operator-utils/v2/pkg/util/lockedresourcecontroller/lockedresource"
 )
 
 // EnforcingPatchReconciler reconciles a EnforcingPatch object

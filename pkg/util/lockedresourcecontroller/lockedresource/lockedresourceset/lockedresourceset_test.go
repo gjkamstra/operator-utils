@@ -13,7 +13,7 @@ package lockedresourceset
 // 	"testing/quick"
 // 	"time"
 
-// 	"github.com/redhat-cop/operator-utils/pkg/util/lockedresourcecontroller/lockedresource"
+// 	"github.com/gjkamstra/operator-utils/v2/pkg/util/lockedresourcecontroller/lockedresource"
 // )
 
 // func TestAdd(t *testing.T) {

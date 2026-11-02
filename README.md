@@ -57,7 +57,7 @@ To get started with this library do the following:
 Change your reconciler initialization as exemplified below to add a set of utility methods to it
 
 ```go
-import "github.com/redhat-cop/operator-utils/pkg/util"
+import "github.com/gjkamstra/operator-utils/v2/pkg/util"
 
 ...
 type MyReconciler struct {
