@@ -126,13 +126,17 @@ func (lrm *LockedResourceManager) Start(ctx context.Context, config *rest.Config
 
 	//diabling metrics
 	options := lrm.options
-	options.MetricsBindAddress = "0"
+	options.Metrics.BindAddress = "0"
 	options.LeaderElection = false
 
 	if !lrm.clusterWatchers {
 		namespaces := lrm.scanNamespaces()
 		lrm.log.V(1).Info("starting multicache with the following ", "namespaces", namespaces)
-		options.NewCache = cache.MultiNamespacedCacheBuilder(namespaces)
+		defaultNamespaces := map[string]cache.Config{}
+		for _, namespace := range namespaces {
+			defaultNamespaces[namespace] = cache.Config{}
+		}
+		options.Cache.DefaultNamespaces = defaultNamespaces
 	}
 
 	stoppableManager, err := stoppablemanager.NewStoppableManager(config, options)
@@ -325,7 +329,7 @@ func (lrm *LockedResourceManager) validateLockedResources(lockedResources []lock
 		lrm.log.Error(err, "unable to get resources from openapi doc")
 		return err
 	}
-	schemaValidation := validation.NewSchemaValidation(resources)
+	schemaValidation := validation.NewSchemaValidation(staticOpenAPIResourcesGetter{resources: resources})
 	result := &multierror.Error{}
 	for _, lockedResource := range lockedResources {
 		defined, err := discoveryclient.IsUnstructuredDefined(ctx, &lockedResource.Unstructured)
@@ -407,4 +411,14 @@ func (lrm *LockedResourceManager) validateLockedPatches(patches []lockedpatch.Lo
 		return result
 	}
 	return nil
+}
+
+// staticOpenAPIResourcesGetter adapts an already-fetched openapi.Resources to the
+// openapi.OpenAPIResourcesGetter interface required by validation.NewSchemaValidation.
+type staticOpenAPIResourcesGetter struct {
+	resources openapi.Resources
+}
+
+func (g staticOpenAPIResourcesGetter) OpenAPISchema() (openapi.Resources, error) {
+	return g.resources, nil
 }

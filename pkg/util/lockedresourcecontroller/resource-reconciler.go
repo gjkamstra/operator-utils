@@ -87,19 +87,18 @@ func NewLockedObjectReconciler(mgr manager.Manager, object unstructured.Unstruct
 
 	mgr.GetScheme().AddKnownTypes(groupVersion, &object)
 
-	err = controller.Watch(source.Kind(mgr.GetCache(), &object), &handler.EnqueueRequestForObject{}, &resourceModifiedPredicate{
+	err = controller.Watch(source.Kind[client.Object](mgr.GetCache(), &object, &handler.EnqueueRequestForObject{}, &resourceModifiedPredicate{
 		name:      object.GetName(),
 		namespace: object.GetNamespace(),
 		lrr:       reconciler,
-	})
+	}))
 	if err != nil {
 		reconciler.log.Error(err, "unable to create new watch", "with source", object)
 		return &LockedResourceReconciler{}, err
 	}
 
 	err = controller.Watch(
-		&source.Channel{Source: reconciler.firstReconcile},
-		&handler.EnqueueRequestForObject{},
+		source.Channel(reconciler.firstReconcile, &handler.EnqueueRequestForObject{}),
 	)
 	if err != nil {
 		return &LockedResourceReconciler{}, err
