@@ -45,6 +45,7 @@ jobs:
           version: v0.76.1
           scan-type: config
           scan-ref: .
+          trivyignores: .trivyignore.yaml
           severity: HIGH,CRITICAL
           exit-code: '1'
           timeout: 10m
