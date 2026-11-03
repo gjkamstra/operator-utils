@@ -1,0 +1,13 @@
+# Accepted Trivy findings. Each entry must state why it is accepted.
+misconfigurations:
+  # The enforcing controllers create and patch arbitrary resources described by
+  # user-supplied CRs, so the manager role uses groups=*, resources=*, verbs=*
+  # (see the kubebuilder:rbac markers in controllers/).
+  - id: KSV-0044
+    paths:
+      - config/rbac/role.yaml
+    statement: Wildcard access is required to enforce arbitrary resource kinds.
+  - id: KSV-0046
+    paths:
+      - config/rbac/role.yaml
+    statement: Wildcard access is required to enforce arbitrary resource kinds.

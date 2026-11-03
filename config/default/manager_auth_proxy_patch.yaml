@@ -8,9 +8,19 @@ metadata:
 spec:
   template:
     spec:
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
       containers:
       - name: kube-rbac-proxy
         image: quay.io/coreos/kube-rbac-proxy:v0.11.0
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          readOnlyRootFilesystem: true
         args:
         - "--secure-listen-address=0.0.0.0:8443"
         - "--upstream=http://127.0.0.1:8080/"
@@ -32,6 +42,12 @@ spec:
             cpu: 5m
             memory: 64Mi
       - name: manager
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          readOnlyRootFilesystem: true
         args:
         - "--metrics-addr=127.0.0.1:8080"
         - "--enable-leader-election"
